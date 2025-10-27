@@ -32,6 +32,17 @@ interface Section8Props {
   errorMessage?: string;
 }
 
+const getTenantFromSubdomain = () => {
+  if (typeof window === 'undefined') return '';
+  const host = window.location.hostname;
+  // Lấy subdomain đầu tiên (nam-linh.lovenote.com)
+  const parts = host.split('.');
+  if (parts.length > 2) {
+    return parts[0];
+  }
+  return '';
+};
+
 const Section8: React.FC<Section8Props> = ({
   title = "Sổ Lưu Bút",
   description = "Cảm ơn bạn rất nhiều vì đã gửi những lời chúc mừng tốt đẹp nhất đến đám cưới của chúng tôi!",
@@ -54,9 +65,16 @@ const Section8: React.FC<Section8Props> = ({
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+  // Lưu tenantId từ subdomain
+  const [tenantId, setTenantId] = useState('');
+
   useEffect(() => {
-    fetchWishes();
+    const t = getTenantFromSubdomain();
+    setTenantId(t);
+    fetchWishes(t);
   }, []);
+
 
   // Gửi lời chúc
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +82,8 @@ const Section8: React.FC<Section8Props> = ({
     setLoading(true);
 
     try {
-      const response = await fetch(apiUrl, {
+      const url = tenantId ? `${apiUrl}?tenant=${tenantId}` : apiUrl;
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, phone, message }),
@@ -77,7 +96,7 @@ const Section8: React.FC<Section8Props> = ({
       setName("");
       setPhone("");
       setMessage("");
-      fetchWishes();
+      fetchWishes(tenantId);
     } catch (error) {
       console.error(error);
       toast.error(errorMessage);
@@ -86,10 +105,12 @@ const Section8: React.FC<Section8Props> = ({
     }
   };
 
+
   // Lấy danh sách lời chúc
-  const fetchWishes = async () => {
+  const fetchWishes = async (tenant?: string) => {
     try {
-      const response = await fetch(apiUrl);
+      const url = tenant ? `${apiUrl}?tenant=${tenant}` : apiUrl;
+      const response = await fetch(url);
       if (!response.ok) throw new Error("Không thể tải lời chúc!");
       const data = await response.json();
       setWishes(data.reverse());
