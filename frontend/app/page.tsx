@@ -44,13 +44,13 @@ export default function Page() {
         setOpen={setOpen}
         initialTab={initialTab}
         groomInfo={{
-          qrUrl: "https://img.vietqr.io/image/MB-9704222268-compact2.png",
+          qrUrl: "https://res.cloudinary.com/dpufemrnq/image/upload/v1761554803/2_xo9azf.png",
           bankName: "MB Bank",
           accountName: "NGUYEN VAN NAM",
           accountNumber: "9704222268",
         }}
         brideInfo={{
-          qrUrl: "https://img.vietqr.io/image/ACB-1234567890-compact2.png",
+          qrUrl: "https://res.cloudinary.com/dpufemrnq/image/upload/v1761554803/1_jgnowe.png",
           bankName: "ACB Bank",
           accountName: "TRAN THI THAO",
           accountNumber: "1234567890",

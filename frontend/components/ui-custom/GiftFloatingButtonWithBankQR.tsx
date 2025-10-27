@@ -57,7 +57,7 @@ const GiftFloatingButtonWithBankQR: React.FC<GiftFloatingButtonWithBankQRProps> 
                 </div>
 
                 <Tabs value={tab} onValueChange={(v) => setTab(v as "groom" | "bride")} className="min-content">
-                    <TabsList className="px-3 rounded-full h-[40px]  mb-4">
+                    <TabsList className="px-3 rounded-full h-[35px]  mb-4">
                         <TabsTrigger
                             value="groom"
                             className="px-4 h-[28px] pt-1 text-[13px] uppercase rounded-full data-[state=active]:bg-white data-[state=active]:shadow"
